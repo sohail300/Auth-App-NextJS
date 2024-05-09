@@ -15,11 +15,11 @@ const Login = () => {
     baseURL,
   });
 
-  function handleUsername(e) {
+  function handleUsername(e: any) {
     setUsername(e.target.value);
   }
 
-  function handlePassword(e) {
+  function handlePassword(e: any) {
     setPassword(e.target.value);
   }
 

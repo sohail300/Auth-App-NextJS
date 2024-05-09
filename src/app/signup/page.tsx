@@ -16,15 +16,15 @@ const Signup = () => {
     baseURL,
   });
 
-  function handleUsername(e) {
+  function handleUsername(e: any) {
     setUsername(e.target.value);
   }
 
-  function handleEmail(e) {
+  function handleEmail(e: any) {
     setEmail(e.target.value);
   }
 
-  function handlePassword(e) {
+  function handlePassword(e: any) {
     setPassword(e.target.value);
   }
 

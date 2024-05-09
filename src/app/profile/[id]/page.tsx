@@ -5,7 +5,7 @@ import { baseURL } from "@/utils/config";
 import { useRouter } from "next/navigation";
 import { Toaster } from "react-hot-toast";
 
-const ProfilePage = ({ params }) => {
+const ProfilePage = ({ params }: any) => {
   const [username, setUsername] = useState(null);
   const [email, setEmail] = useState(null);
   const [isVerified, setIsVerified] = useState(false);
