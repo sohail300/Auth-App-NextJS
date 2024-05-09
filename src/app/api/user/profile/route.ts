@@ -1,22 +1,32 @@
 import { User } from "@/models/userModel";
 import { getIdFromToken } from "@/utils/getIdFromToken";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { connection } from "@/db/connection";
 
-connection();
-
-export async function GET(req: NextRequest, res: NextResponse) {
+export async function GET(req: NextRequest) {
   try {
+    await connection();
     const { id }: any = await (await getIdFromToken(req)).json();
 
-    const user = await User.findById(id).select("_id username email isVerified");
+    const user = await User.findById(id).select(
+      "_id username email isVerified"
+    );
 
     if (user) {
-      return NextResponse.json({ msg: "User found", data: user });
+      return Response.json({
+        msg: "User found",
+        user,
+        success: true,
+        status: "200",
+      });
     } else {
-      return NextResponse.json({ msg: "User doesnt exist" });
+      return Response.json({
+        msg: "User doesnt exist",
+        success: false,
+        status: "404",
+      });
     }
   } catch (error: any) {
-    return NextResponse.json({ msg: error.message, status: '500' });
+    return Response.json({ msg: error.message, success: false, status: "500" });
   }
 }

@@ -1,23 +1,21 @@
 import { connection } from "@/db/connection";
 import { User } from "@/models/userModel";
 import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { loginInput } from "@/zodTypes/loginInput";
 
-const loginInput = z.object({
-  username: z.string().min(1, "Enter Username"),
-  password: z.string().min(1, "Enter Password"),
-});
-
-connection();
-
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
   try {
+    await connection();
     const parsedInput = loginInput.safeParse(await req.json());
 
     if (parsedInput.success === false) {
-      return NextResponse.json({ msg: parsedInput.error });
+      return Response.json({
+        msg: parsedInput.error.message,
+        status: "401",
+        success: false,
+      });
     }
 
     const { username, password } = parsedInput.data;
@@ -25,7 +23,11 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const user = await User.findOne({ username });
 
     if (!user) {
-      return NextResponse.json({ msg: "Invalid Credentials", status: "401" });
+      return Response.json({
+        msg: "Invalid Credentials",
+        status: "401",
+        success: false,
+      });
     } else {
       const match = await bcryptjs.compare(password, user.password);
 
@@ -37,6 +39,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
         const response = NextResponse.json({
           msg: "User logged in",
           status: "200",
+          success: true,
         });
 
         response.cookies.set("token", token, {
@@ -45,10 +48,14 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
         return response;
       } else {
-        return NextResponse.json({ msg: "Invalid Credentials", status: "401" });
+        return Response.json({
+          msg: "Invalid Credentials",
+          status: "401",
+          success: false,
+        });
       }
     }
-  } catch (error) {
-    return NextResponse.json({ msg: error, status: "500" });
+  } catch (error: any) {
+    return Response.json({ msg: error.message, status: "500", success: false });
   }
 }

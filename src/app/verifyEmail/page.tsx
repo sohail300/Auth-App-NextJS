@@ -7,22 +7,21 @@ import React, { useEffect, useState } from "react";
 
 const VerifyEmail = () => {
   const [token, setToken]: any = useState("");
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
   const api = axios.create({
     baseURL,
   });
-  const searchParams = useSearchParams();
-  const router = useRouter();
 
   async function verify() {
     const response = await api.post("/api/user/verifyEmail", {
       token,
     });
 
-    console.log(response.data)
     if (response.data.status === "200") {
       router.push("/profile");
     }
-    console.log(response.data);
   }
 
   useEffect(() => {

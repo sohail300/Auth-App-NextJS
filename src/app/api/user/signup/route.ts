@@ -3,88 +3,115 @@ import { User } from "@/models/userModel";
 import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import { mailer } from "@/utils/mailer";
-import { z } from "zod";
 import jwt from "jsonwebtoken";
+import { signupInput } from "@/zodTypes/signupInput";
 
-connection();
-
-// Custom validator function to check password complexity
-function passwordComplexityValidator(value: any) {
-  const uppercaseRegex = /[A-Z]/;
-  const lowercaseRegex = /[a-z]/;
-  const numberRegex = /[0-9]/;
-
-  return (
-    (uppercaseRegex.test(value) || lowercaseRegex.test(value)) &&
-    numberRegex.test(value)
-  );
-}
-
-const signupInput = z.object({
-  username: z
-    .string()
-    .max(20, "Username should be between 1-20 charcacters.")
-    .min(1, "Username should be between 1-20 charcacters."),
-  email: z
-    .string()
-    .email()
-    .max(20, "Email should be between 1-20 charcacters.")
-    .min(1, "Email should be between 1-20 charcacters."),
-  password: z
-    .string()
-    .max(20, "Password should be between 1-20 charcacters.")
-    .min(1, "Password should be between 1-20 charcacters.")
-    .refine((value) => passwordComplexityValidator(value), {
-      message:
-        "Password must contain at least one uppercase letter or one lowercase letter and one special character",
-    }),
-});
-
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
   try {
+    await connection();
     const parsedInput = signupInput.safeParse(await req.json());
 
     if (parsedInput.success === false) {
-      return NextResponse.json({ msg: parsedInput.error });
+      return Response.json({
+        msg: parsedInput.error.errors[0].message,
+        success: false,
+        status: "401",
+      });
     }
 
     const { username, email, password } = parsedInput.data;
 
-    const user = await User.findOne({ email });
+    const userByUsername = await User.findOne({ username });
 
-    if (!user) {
-      const salt = await bcryptjs.genSalt(10);
-      const hashedPassword = await bcryptjs.hash(password, salt);
+    if (userByUsername) {
+      if (userByUsername.isVerified) {
+        return Response.json({
+          msg: "Username already taken",
+          status: "400",
+          success: false,
+        });
+      } else {
+        const userByEmail = await User.findOne({ email });
+        if (userByEmail) {
+          return Response.json({
+            msg: "Email already present",
+            status: "400",
+            success: false,
+          });
+        } else {
+          const salt = await bcryptjs.genSalt(10);
+          const hashedPassword = await bcryptjs.hash(password, salt);
 
-      const obj = {
-        username,
-        email,
-        password: hashedPassword,
-      };
+          userByUsername.email = email;
+          userByUsername.password = hashedPassword;
 
-      const newUser = new User(obj);
-      const savedUser = await newUser.save();
+          const savedUser = await userByUsername.save();
 
-      await mailer(email, "verify", savedUser._id);
+          await mailer(email, "verify", savedUser._id);
 
-      const token = jwt.sign({ id: savedUser._id }, process.env.JWT_SECRET!, {
-        expiresIn: "1h",
-      });
+          const token = jwt.sign(
+            { id: savedUser._id },
+            process.env.JWT_SECRET!,
+            {
+              expiresIn: "1h",
+            }
+          );
 
-      const response = NextResponse.json({
-        msg: "User registered",
-        status: "201",
-      });
+          const response = NextResponse.json({
+            msg: "User registered",
+            status: "201",
+            success: true,
+          });
 
-      response.cookies.set("token", token, {
-        httpOnly: true,
-      });
+          response.cookies.set("token", token, {
+            httpOnly: true,
+          });
 
-      return response;
+          return response;
+        }
+      }
     } else {
-      return NextResponse.json({ msg: "User already exists", status: "400" });
+      const userByEmail = await User.findOne({ email });
+
+      if (userByEmail) {
+        return Response.json({
+          msg: "User already exists",
+          status: "400",
+          success: false,
+        });
+      } else {
+        const salt = await bcryptjs.genSalt(10);
+        const hashedPassword = await bcryptjs.hash(password, salt);
+
+        const obj = {
+          username,
+          email,
+          password: hashedPassword,
+        };
+
+        const newUser = new User(obj);
+        const savedUser = await newUser.save();
+
+        await mailer(email, "verify", savedUser._id);
+
+        const token = jwt.sign({ id: savedUser._id }, process.env.JWT_SECRET!, {
+          expiresIn: "1h",
+        });
+
+        const response = NextResponse.json({
+          msg: "User registered",
+          status: "201",
+          success: true,
+        });
+
+        response.cookies.set("token", token, {
+          httpOnly: true,
+        });
+
+        return response;
+      }
     }
-  } catch (error) {
-    return NextResponse.json({ msg: error, status: "500" });
+  } catch (error: any) {
+    return Response.json({ msg: error.message, status: "500", success: false });
   }
 }

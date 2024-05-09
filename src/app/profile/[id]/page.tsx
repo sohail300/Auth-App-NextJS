@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 import { Toaster } from "react-hot-toast";
 
 const ProfilePage = ({ params }) => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState(null);
+  const [email, setEmail] = useState(null);
   const [isVerified, setIsVerified] = useState(false);
 
   const api = axios.create({
@@ -22,12 +22,9 @@ const ProfilePage = ({ params }) => {
     const response = await api.post("/api/user/profilePage", {
       id,
     });
-    console.log(response.data);
-    console.log(response.data.data.username);
-    console.log(response.data.data.email);
-    setUsername(response.data.data.username);
-    setEmail(response.data.data.email);
-    setIsVerified(response.data.data.isVerified);
+    setUsername(response.data.user.username);
+    setEmail(response.data.user.email);
+    setIsVerified(response.data.user.isVerified);
   }
 
   useEffect(() => {
@@ -46,22 +43,24 @@ const ProfilePage = ({ params }) => {
     <div className=" w-full flex justify-center items-center">
       <div className=" bg-slate-200 rounded-xl ml-8 w-2/4 py-16 mt-16 shadow-[0_2px_10px_rgba(0,0,0,0.3)]">
         <div className="flex flex-col justify-center items-center ">
+          <h1 className="font-bold text-black text-5xl mb-8">MY PROFILE</h1>
+
           {isVerified ? (
             <div className=" z-10 py-2 px-6 mt-8 rounded-md bg-green-500">
               User verified
             </div>
           ) : (
             <div className=" z-10 py-2 px-6 mt-8 rounded-md bg-red-500">
-              User not verified
+              User not verified, you might lose your account
             </div>
           )}
 
           <div className=" z-10 py-2 px-6 mt-8 rounded-md bg-blue-500">
-            {username}
+            {username === null ? "Loading..." : username}
           </div>
 
-          <div className=" z-10 py-2 px-6 mt-8 rounded-md bg-green-500">
-            {email}
+          <div className=" z-10 py-2 px-6 mt-8 rounded-md bg-blue-500">
+            {email === null ? "Loading..." : email}
           </div>
 
           <div

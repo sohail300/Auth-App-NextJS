@@ -2,20 +2,30 @@ import { connection } from "@/db/connection";
 import { User } from "@/models/userModel";
 import { NextRequest, NextResponse } from "next/server";
 
-connection();
-
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
+    await connection();
     const { id } = await req.json();
 
-    const user = await User.findById(id).select("username email isVerified");
+    const user = await User.findById(id).select(
+      "_id username email isVerified"
+    );
 
     if (user) {
-      return NextResponse.json({ msg: "User found", data: user });
+      return Response.json({
+        msg: "User found",
+        user,
+        status: "200",
+        success: true,
+      });
     } else {
-      return NextResponse.json({ msg: "User doesnt exist" });
+      return Response.json({
+        msg: "User doesnt exist",
+        status: "404",
+        success: false,
+      });
     }
   } catch (error: any) {
-    return NextResponse.json({ msg: error.message, status: "500" });
+    return Response.json({ msg: error.message, status: "500", success: false });
   }
 }
