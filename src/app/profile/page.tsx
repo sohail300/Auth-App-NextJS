@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { baseURL } from "@/utils/config";
@@ -23,12 +23,13 @@ const Profile = () => {
 
   useEffect(() => {
     getUserDetails();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function logout() {
     const response = await api.get("/api/user/logout");
 
-    if (response.data.status === "200") {
+    if (response.data.success) {
       router.replace("/");
     }
   }

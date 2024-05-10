@@ -36,7 +36,7 @@ const Signup = () => {
     });
     console.log(response.data);
     toast(response.data.msg);
-    if (response.data.status === "201") {
+    if (response.data.success) {
       router.replace("/profile");
     }
   }

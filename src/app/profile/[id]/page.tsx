@@ -29,12 +29,13 @@ const ProfilePage = ({ params }: any) => {
 
   useEffect(() => {
     getDetails();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function logout() {
     const response = await api.get("/api/user/logout");
 
-    if (response.data.status === "200") {
+    if (response.data.success) {
       router.replace("/");
     }
   }

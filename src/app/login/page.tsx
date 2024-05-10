@@ -28,9 +28,8 @@ const Login = () => {
       username,
       password,
     });
-    console.log(response.data);
     toast(response.data.msg);
-    if (response.data.status === "200") {
+    if (response.data.success) {
       router.replace("/profile");
     }
   }
