@@ -10,12 +10,8 @@ const Profile = () => {
   const [verified, setVerified] = useState(false);
   const router = useRouter();
 
-  const api: any = axios.create({
-    baseURL,
-  });
-
   async function getUserDetails() {
-    const response = await api.get("/api/user/profile");
+    const response = await axios.get("/api/user/profile");
 
     setId(response.data.user._id);
     setVerified(response.data.user.isVerified);
@@ -27,7 +23,7 @@ const Profile = () => {
   }, []);
 
   async function logout() {
-    const response = await api.get("/api/user/logout");
+    const response = await axios.get("/api/user/logout");
 
     if (response.data.success) {
       router.replace("/");
@@ -57,7 +53,7 @@ const Profile = () => {
                   router.push(`/profile/${id}`);
                 }}
               >
-                {id === null ? "Loading..." : id }
+                {id === null ? "Loading..." : id}
               </div>
 
               <div

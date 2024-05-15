@@ -12,10 +12,6 @@ const Signup = () => {
 
   const router = useRouter();
 
-  const api: any = axios.create({
-    baseURL,
-  });
-
   function handleUsername(e: any) {
     setUsername(e.target.value);
   }
@@ -29,7 +25,7 @@ const Signup = () => {
   }
 
   async function handleSignup() {
-    const response = await api.post("/api/user/signup", {
+    const response = await axios.post("/api/user/signup", {
       username,
       email,
       password,

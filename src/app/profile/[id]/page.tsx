@@ -10,16 +10,12 @@ const ProfilePage = ({ params }: any) => {
   const [email, setEmail] = useState(null);
   const [isVerified, setIsVerified] = useState(false);
 
-  const api = axios.create({
-    baseURL,
-  });
-
   const router = useRouter();
 
   const id = params.id;
 
   async function getDetails() {
-    const response = await api.post("/api/user/profilePage", {
+    const response = await axios.post("/api/user/profilePage", {
       id,
     });
     setUsername(response.data.user.username);
@@ -33,7 +29,7 @@ const ProfilePage = ({ params }: any) => {
   }, []);
 
   async function logout() {
-    const response = await api.get("/api/user/logout");
+    const response = await axios.get("/api/user/logout");
 
     if (response.data.success) {
       router.replace("/");

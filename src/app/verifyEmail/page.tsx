@@ -11,13 +11,9 @@ const VerifyEmail = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const api = axios.create({
-    baseURL,
-  });
-
   async function verify() {
     try {
-      const response = await api.post("/api/user/verifyEmail", {
+      const response = await axios.post("/api/user/verifyEmail", {
         token,
       });
 

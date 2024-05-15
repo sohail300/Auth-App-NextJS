@@ -11,10 +11,6 @@ const Login = () => {
 
   const router = useRouter();
 
-  const api: any = axios.create({
-    baseURL,
-  });
-
   function handleUsername(e: any) {
     setUsername(e.target.value);
   }
@@ -24,7 +20,7 @@ const Login = () => {
   }
 
   async function handleLogin() {
-    const response = await api.post("/api/user/login", {
+    const response = await axios.post("/api/user/login", {
       username,
       password,
     });
