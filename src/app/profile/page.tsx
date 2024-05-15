@@ -12,9 +12,9 @@ const Profile = () => {
 
   async function getUserDetails() {
     const response = await axios.get("/api/user/profile");
-
-    setId(response.data.user._id);
-    setVerified(response.data.user.isVerified);
+    const user = response.data.user;
+    setId(user._id);
+    setVerified(user.isVerified);
   }
 
   useEffect(() => {

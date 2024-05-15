@@ -18,9 +18,11 @@ const ProfilePage = ({ params }: any) => {
     const response = await axios.post("/api/user/profilePage", {
       id,
     });
-    setUsername(response.data.user.username);
-    setEmail(response.data.user.email);
-    setIsVerified(response.data.user.isVerified);
+
+    const user = response.data.user;
+    setUsername(user.username);
+    setEmail(user.email);
+    setIsVerified(user.isVerified);
   }
 
   useEffect(() => {
