@@ -48,28 +48,28 @@ const Signup = () => {
                 type="text"
                 className="bg-white rounded-md p-2 mb-8 text-black placeholder-black placeholder-opacity-75 border border-solid border-gray1 focus:outline-none focus:border-gray2"
                 placeholder="USERNAME"
-                onChange={handleUsername}
+                onChange={(e) => handleUsername(e)}
                 value={username}
               />
               <input
                 type="text"
                 className="bg-white rounded-md p-2 mb-8 text-black placeholder-black placeholder-opacity-75 border border-solid border-gray1 focus:outline-none focus:border-gray2"
                 placeholder="EMAIL"
-                onChange={handleEmail}
+                onChange={(e) => handleEmail(e)}
                 value={email}
               />
               <input
                 type="password"
                 className="bg-white rounded-md p-2 mb-8 text-black placeholder-black placeholder-opacity-75 border border-solid border-gray1 focus:outline-none focus:border-gray2"
                 placeholder="PASSWORD"
-                onChange={handlePassword}
+                onChange={(e) => handlePassword(e)}
                 value={password}
               />
               <input
                 className="cursor-pointer rounded-md bg-cyan-400 text-black w-full p-2 outline-none shadow-sm shadow-black font-medium"
                 type="submit"
                 value="SIGNUP"
-                onClick={handleSignup}
+                onClick={() => handleSignup()}
               />
             </div>
 
