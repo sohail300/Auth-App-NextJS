@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { baseURL } from "@/utils/config";
 
 const Profile = () => {
   const [id, setId] = useState(null);
