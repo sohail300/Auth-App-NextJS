@@ -1,0 +1,178 @@
+{
+	"info": {
+		"_postman_id": "1eb438d2-8d5e-4d15-bd33-2f5d5ec21e44",
+		"name": "Auth app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "20665288"
+	},
+	"item": [
+		{
+			"name": "Signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"sohail\",\r\n    \"email\": \"sohail@gmail.com\",\r\n    \"password\": \"sohail123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{authUrl}}/signup"
+			},
+			"response": []
+		},
+		{
+			"name": "Verify Email",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"token\": \"937634c5-39ba-4b5f-a9e7-a291a03cb153\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{authUrl}}/verifyEmail"
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"sohail\",\r\n    \"password\": \"sohail123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{authUrl}}/login"
+			},
+			"response": []
+		},
+		{
+			"name": "Profile",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{authUrl}}/profile"
+			},
+			"response": []
+		},
+		{
+			"name": "Send Forgot Password Email",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"sohail@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{authUrl}}/sendForgotPasswordEmail"
+			},
+			"response": []
+		},
+		{
+			"name": "Forgot Password",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"token\": \"b87213f7-b1c6-41d8-a679-a9c2debd70f2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{authUrl}}/forgotPassword"
+			},
+			"response": []
+		},
+		{
+			"name": "Change Password",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"sohail\",\r\n    \"password\": \"sohail@111\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{authUrl}}/changePassword"
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{authUrl}}/logout"
+			},
+			"response": []
+		},
+		{
+			"name": "Profile Page",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"663cf3de94af973deadabe8c\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{authUrl}}/profilePage"
+			},
+			"response": []
+		}
+	]
+}
