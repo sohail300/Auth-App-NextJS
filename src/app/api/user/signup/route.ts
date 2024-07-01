@@ -6,6 +6,8 @@ import { mailer } from "@/utils/mailer";
 import jwt from "jsonwebtoken";
 import { signupInput } from "@/zodTypes/signupInput";
 
+export const runtime = "edge";
+
 export async function POST(req: NextRequest) {
   try {
     await connection();

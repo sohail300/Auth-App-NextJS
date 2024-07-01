@@ -5,6 +5,8 @@ import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { loginInput } from "@/zodTypes/loginInput";
 
+export const runtime = "edge";
+
 export async function POST(req: NextRequest) {
   try {
     await connection();

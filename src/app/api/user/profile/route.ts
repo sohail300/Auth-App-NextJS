@@ -3,6 +3,8 @@ import { getIdFromToken } from "@/utils/getIdFromToken";
 import { NextRequest } from "next/server";
 import { connection } from "@/db/connection";
 
+export const runtime = "edge";
+
 export async function GET(req: NextRequest) {
   try {
     await connection();

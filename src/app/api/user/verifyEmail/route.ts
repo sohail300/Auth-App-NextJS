@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { User } from "@/models/userModel";
 import { connection } from "@/db/connection";
 
+export const runtime = "edge";
+
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
     await connection();
